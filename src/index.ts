@@ -10,30 +10,34 @@ AppDataSource.initialize().then(async () => {
     const users = await AppDataSource.manager.find(User)
     console.log(users)
 
-    console.log('Deleting existent users...');
-    //REMOVER USERS
+    //------------------------R E M O V E - U S E R  S -------------------------------------------------------------//
+    //
+    // console.log('Deleting existent users...');
     // users.forEach(async u => {
     //     const usrDeleted = await AppDataSource.manager.delete(User, u.id)
     //     console.log(`Deleted : ${usrDeleted}`)
     // })
+    //--------------------------------------------------------------------------------------------------------------//
 
-    //ADD USER
+    //------------------------------------A D D - U S E R ----------------------------------------------------------//
     console.log("Inserting a new user into the database...")
     const user = new User()
-    // const comment = new Comment()
     user.name = "ivan"
     user.email = "ivan.teste@teste.com"
-    // comment.text = 'teste' 
-
-    
     await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
         await transactionalEntityManager.save(user)
-
     })
-    // await AppDataSource.manager.save(comment)
-
+     //------------------------------------A D D - C O M M E N T ----------------------------------------------------------//
+     console.log("Inserting a new user into the database...")
+    const comment = new Comment()
+    comment.text = 'The standard Lorem Ipsum passage, used since the 1500s'
+    user.comments = [comment]
+    await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+        await transactionalEntityManager.save(comment)
+    })
+//--------------------------------------------------------------------------------------------------------------//
     console.log("Saved a new user with id: " + user.id)
-
+    //-------------------------------------------------------------------------------------//
     //EDIT USER
     console.log("Updated usr at database...")
     user.email = 'teste2@teste.com'
